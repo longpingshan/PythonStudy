@@ -1,0 +1,32 @@
+#coding:utf-8
+# -*-coding:utf-8 -*-
+import math
+import requests
+import jieba
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
+filename = open('/home/lps/桌面/work/太空旅客.txt','r')
+fileread = filename.read()
+filename.close()
+ #jieba.cut()中的cut_all是分词的模式,用true和false分别表示全模式或精准模式
+fen_list = jieba.cut(fileread,cut_all=True)
+result = {}
+for fen in fen_list:
+    fen = ' '.join(fen.split())
+    # isdigit（）用来检查该字符串是否为0~9
+    if(fen !=''and fen != "\n" and fen != "\n\n" and fen.isdigit()!=True and len(fen)>1):
+        #has_key()用来检查字典中是否含有特定的键值
+        if result.has_key(fen):
+            result[fen] += 1
+        else:
+            result[fen] = 1
+
+
+f = open('work.txt',"w+")
+# 用于从大到小排序,items()将字典内的所有项以列表方式返回
+L = sorted(result.items(),key=lambda asd:asd[1],reverse=True)
+for keyword in L[0:]:
+    f.write(keyword[0]+' '+'出现次数：'+str(keyword[1])+'\n')
+f.close()
